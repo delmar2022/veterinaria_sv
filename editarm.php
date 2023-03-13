@@ -1,10 +1,50 @@
-<?php
-session_start();
-?>
 <!doctype html>
 <html lang="en">
 <?php include('menu.php'); ?>
 <?php include('config.php'); ?>
+<?php
+$id = $_GET['id'];
+// Obtener los datos actuales del registro
+$stmt = $pdo->prepare("SELECT * FROM mascotas WHERE id_mascota = :id");
+$stmt->execute(['id' => $id]);
+$mascota = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nombre = $_POST['nombre'];
+    $raza = $_POST['raza'];
+    $color = $_POST['color'];
+    $peso = $_POST['peso'];
+    $altura = $_POST['altura'];
+    $sexo = $_POST['sexo'];
+    $fech_nacimiento = $_POST['fech_nacimiento'];
+
+    // Actualizar el registro en la base de datos
+    $stmt = $pdo->prepare("UPDATE mascotas SET nombre = :nombre, 
+                                                raza = :raza, 
+                                                color = :color, 
+                                                peso = :peso, 
+                                                altura = :altura, 
+                                                sexo = :sexo, 
+                                                fech_nacimiento = :fech_nacimiento 
+                                                WHERE id_mascota = :id");
+    $stmt->execute([
+        'nombre' => $nombre,
+        'raza' => $raza,
+        'color' => $color,
+        'peso' => $peso,
+        'altura' => $altura,
+        'sexo' => $sexo,
+        'fech_nacimiento' => $fech_nacimiento,
+        'id' => $id
+    ]);
+
+    // Redirigir de vuelta a la lista de registros
+    echo "<script>alert('La mascota actualizada correctamente'); 
+    window.location = 'editarm.php?id=' . $id . '';
+    </script>";
+    //exit;
+}
+
+?>
 
 <head>
     <!-- Required meta tags -->
@@ -22,28 +62,28 @@ session_start();
         <div class="row">
             <div class="col-4">
                 <div class="row justify-content-center">
-                    <h4>Nueva Mascota</h4>
+                    <h4>Editar Mascota</h4>
                     <hr>
-                    <form class="mx-auto" action="gmascotas.php" method="post" id="mascotas">
+                    <form class="mx-auto" method="post">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre">
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $mascota['nombre'] ?>">
                         </div>
                         <div class="mb-3">
                             <label for="raza" class="form-label">Raza:</label>
-                            <input type="text" class="form-control" id="raza" name="raza">
+                            <input type="text" class="form-control" id="raza" name="raza" value="<?php echo $mascota['raza'] ?>">
                         </div>
                         <div class="mb-3">
                             <label for="color" class="form-label">Color:</label>
-                            <input type="text" class="form-control" id="color" name="color">
+                            <input type="text" class="form-control" id="color" name="color" value="<?php echo $mascota['color'] ?>">
                         </div>
                         <div class="mb-3">
                             <label for="peso" class="form-label">Peso:</label>
-                            <input type="number" class="form-control" id="peso" name="peso" step="0.01">
+                            <input type="number" class="form-control" id="peso" name="peso" step="0.01" value="<?php echo $mascota['peso'] ?>">
                         </div>
                         <div class="mb-3">
                             <label for="altura" class="form-label">Altura:</label>
-                            <input type="number" class="form-control" id="altura" name="altura" step="0.01">
+                            <input type="number" class="form-control" id="altura" name="altura" step="0.01" value="<?php echo $mascota['altura'] ?>">
                         </div>
                         <div class="mb-3">
                             <label for="sexo" class="form-label">Sexo:</label>
@@ -54,55 +94,15 @@ session_start();
                         </div>
                         <div class="mb-3">
                             <label for="fech_nacimiento" class="form-label">Fecha de nacimiento:</label>
-                            <input type="date" class="form-control" id="fech_nacimiento" name="fech_nacimiento">
+                            <input type="date" class="form-control" id="fech_nacimiento" name="fech_nacimiento" value="<?php echo $mascota['fech_nacimiento'] ?>">
                         </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
                     </form>
 
 
                 </div>
             </div>
             <div class="col-8">
-                <?php
-
-                // Ejecutar una consulta SELECT para obtener todos los datos de la tabla "mascotas"
-                $stmt = $pdo->prepare("SELECT * FROM mascotas");
-                $stmt->execute();
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // Crear una tabla HTML5 con encabezados para cada columna
-                echo '<table class="table table-hover">';
-                echo '<tr>
-                            <th>Nombre</th>
-                            <th>Raza</th>
-                            <th>Color</th>
-                            <th>Peso</th>
-                            <th>Altura</th>
-                            <th>Sexo</th>
-                            <th>Fecha de nacimiento</th>
-                        </tr>';
-
-                // Recorrer los resultados de la consulta y mostrar cada fila en la tabla
-                foreach ($results as $row) {
-                    echo '<tr>';
-                    echo '<td>' . $row['nombre'] . '</td>';
-                    echo '<td>' . $row['raza'] . '</td>';
-                    echo '<td>' . $row['color'] . '</td>';
-                    echo '<td>' . $row['peso'] . '</td>';
-                    echo '<td>' . $row['altura'] . '</td>';
-                    echo '<td>' . $row['sexo'] . '</td>';
-                    echo '<td>' . $row['fech_nacimiento'] . '</td>';
-                    // Agregar botones de editar y eliminar para cada fila
-                    echo '<td><a href="editarm.php?id=' . $row['id_mascota'] . '">Editar</a> 
-                    | <a href="eliminarm.php?id=' . $row['id_mascota'] . '">Eliminar</a></td>';
-                    echo '</tr>';
-                }
-
-                echo '</table>';
-
-                // Cerrar la conexión a la base de datos
-                $conn = null;
-                ?>
 
             </div>
         </div>

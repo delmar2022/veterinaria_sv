@@ -1,3 +1,6 @@
+<?
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 <?php include('menu.php'); ?>
