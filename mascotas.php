@@ -24,7 +24,7 @@ session_start();
                 <div class="row justify-content-center">
                     <h4>Nueva Mascota</h4>
                     <hr>
-                    <form class="mx-auto" action="gmascotas.php" method="post" id="mascotas">
+                    <form class="mx-auto" method="post" id="form_mascotas">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre:</label>
                             <input type="text" class="form-control" id="nombre" name="nombre">
@@ -63,16 +63,10 @@ session_start();
                 </div>
             </div>
             <div class="col-8">
-                <?php
-
-                // Ejecutar una consulta SELECT para obtener todos los datos de la tabla "mascotas"
-                $stmt = $pdo->prepare("SELECT * FROM mascotas");
-                $stmt->execute();
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // Crear una tabla HTML5 con encabezados para cada columna
-                echo '<table class="table table-hover">';
-                echo '<tr>
+                <input type="text" id="busqueda-mascotas" placeholder="Buscar mascotas...">
+                <table id="tabla-mascotas" class="table">
+                    <thead>
+                        <tr>
                             <th>Nombre</th>
                             <th>Raza</th>
                             <th>Color</th>
@@ -80,41 +74,25 @@ session_start();
                             <th>Altura</th>
                             <th>Sexo</th>
                             <th>Fecha de nacimiento</th>
-                        </tr>';
-
-                // Recorrer los resultados de la consulta y mostrar cada fila en la tabla
-                foreach ($results as $row) {
-                    echo '<tr>';
-                    echo '<td>' . $row['nombre'] . '</td>';
-                    echo '<td>' . $row['raza'] . '</td>';
-                    echo '<td>' . $row['color'] . '</td>';
-                    echo '<td>' . $row['peso'] . '</td>';
-                    echo '<td>' . $row['altura'] . '</td>';
-                    echo '<td>' . $row['sexo'] . '</td>';
-                    echo '<td>' . $row['fech_nacimiento'] . '</td>';
-                    // Agregar botones de editar y eliminar para cada fila
-                    echo '<td><a href="editarm.php?id=' . $row['id_mascota'] . '">Editar</a> 
-                    | <a href="eliminarm.php?id=' . $row['id_mascota'] . '">Eliminar</a></td>';
-                    echo '</tr>';
-                }
-
-                echo '</table>';
-
-                // Cerrar la conexión a la base de datos
-                $conn = null;
-                ?>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- aquí se llenarán los datos de la consulta -->
+                    </tbody>
+                </table>
 
             </div>
-        </div>
 
 
-        <!-- Optional JavaScript; choose one of the two! -->
+            <!-- Optional JavaScript; choose one of the two! -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="js/mascotas.js"></script>
+            <!-- Option 1: Bootstrap Bundle with Popper -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-        <!-- Option 1: Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-        <!-- Option 2: Separate Popper and Bootstrap JS -->
-        <!--
+            <!-- Option 2: Separate Popper and Bootstrap JS -->
+            <!--
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     -->
