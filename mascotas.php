@@ -18,52 +18,19 @@ session_start();
 </head>
 
 <body>
+
     <div class="container"><br>
         <div class="row">
             <div class="col-4">
-                <div class="row justify-content-center">
-                    <h4>Nueva Mascota</h4>
-                    <hr>
-                    <form class="mx-auto" method="post" id="form_mascotas">
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre">
-                        </div>
-                        <div class="mb-3">
-                            <label for="raza" class="form-label">Raza:</label>
-                            <input type="text" class="form-control" id="raza" name="raza">
-                        </div>
-                        <div class="mb-3">
-                            <label for="color" class="form-label">Color:</label>
-                            <input type="text" class="form-control" id="color" name="color">
-                        </div>
-                        <div class="mb-3">
-                            <label for="peso" class="form-label">Peso:</label>
-                            <input type="number" class="form-control" id="peso" name="peso" step="0.01">
-                        </div>
-                        <div class="mb-3">
-                            <label for="altura" class="form-label">Altura:</label>
-                            <input type="number" class="form-control" id="altura" name="altura" step="0.01">
-                        </div>
-                        <div class="mb-3">
-                            <label for="sexo" class="form-label">Sexo:</label>
-                            <select class="form-select" id="sexo" name="sexo">
-                                <option value="m">Macho</option>
-                                <option value="h">Hembra</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fech_nacimiento" class="form-label">Fecha de nacimiento:</label>
-                            <input type="date" class="form-control" id="fech_nacimiento" name="fech_nacimiento">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </form>
-
-
-                </div>
+                <?php
+                include('modal/mascotas.php');
+                ?>
             </div>
             <div class="col-8">
                 <input type="text" id="busqueda-mascotas" placeholder="Buscar mascotas...">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Nuevo Registro
+                </button>
                 <table id="tabla-mascotas" class="table">
                     <thead>
                         <tr>

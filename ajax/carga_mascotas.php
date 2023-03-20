@@ -3,12 +3,12 @@
 include('../config.php');
 
 // Obtener el término de búsqueda enviado desde la petición AJAX
-$termino = $_GET["termino"];
+$buscar = $_GET["buscar"];
 
 // Hacer la consulta
-$sql = "SELECT * FROM mascotas WHERE nombre LIKE :termino OR raza LIKE :termino OR color LIKE :termino";
+$sql = "SELECT * FROM mascotas WHERE nombre LIKE :buscar OR raza LIKE :buscar OR color LIKE :buscar";
 $stmt = $pdo->prepare($sql);
-$stmt->execute(["termino" => "%$termino%"]);
+$stmt->execute(["buscar" => "%$buscar%"]);
 $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Devolver los resultados en formato JSON

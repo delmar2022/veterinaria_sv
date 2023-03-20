@@ -4,18 +4,18 @@ $(document).ready(function () {
 
   // Asignar el evento de búsqueda al input de búsqueda
   $("#busqueda-mascotas").keyup(function () {
-    var termino = $(this).val();
-    cargarDatos(termino);
+    var buscar = $(this).val();
+    cargarDatos(buscar);
   });
 });
 
-function cargarDatos(termino) {
+function cargarDatos(buscar) {
   // Hacer la petición AJAX
   $.ajax({
     url: "ajax/carga_mascotas.php",
     type: "GET",
     dataType: "json",
-    data: { termino: termino },
+    data: { buscar: buscar },
     success: function (resultados) {
       // Limpiar la tabla antes de agregar los datos
       var tbody = $("#tabla-mascotas tbody");
@@ -32,7 +32,7 @@ function cargarDatos(termino) {
         tr.append("<td>" + mascota.sexo + "</td>");
         tr.append("<td>" + mascota.fech_nacimiento + "</td>");
         tr.append(
-          "<td><button class='editar-mascota' data-id='" +
+          "<td><button data-bs-toggle='modal' data-bs-target='#exampleModal' class='editar-mascota' data-id='" +
             mascota.id_mascota +
             "'>Editar</button></td>"
         ); // Botón de edición
